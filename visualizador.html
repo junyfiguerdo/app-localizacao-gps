@@ -117,7 +117,8 @@
             document.getElementById('loading').style.display = 'flex';
             try {
                 const res = await fetch(SCRIPT_URL + '?action=getData');
-                allData = await res.json();
+                const json = await res.json();
+                allData = json.data || [];
                 updateSelects();
                 renderizar();
             } catch (e) { 
