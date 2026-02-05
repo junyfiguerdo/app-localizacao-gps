@@ -87,6 +87,8 @@
                         <th>👤 Usuário</th>
                         <th>🏢 Empresa</th>
                         <th>📍 Local</th>
+                                                <th>🌐 Latitude</th>
+                                                <th>🌐 Longitude</th>
                         <th>📏 Distância</th>
                         <th>⏳ Permanência</th>
                     </tr>
@@ -97,7 +99,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = https://script.google.com/macros/s/AKfycbyYANlgnwbBvooEriVC5L5M5Az-cF3Ppqwbn9DShFVoC8rqpFQ_1Sx7XizHZsh4m1RjDQ/exec;
+   'https://script.google.com/macros/s/AKfycbyYAN1gnwbBvooEriVC5L5M5Az-cF3Ppqwbn9DShFVoC8rqpFQ_1SxZXizHzsh4mJsDQ/exec'
         let map, polyline, markers = [];
         let allData = [];
 
@@ -192,6 +194,8 @@
                     <td>${stayStr}</td>
                 </tr>`;
             });
+                            <td>${d.latitude.toFixed(6)}</td>
+                            <td>${d.longitude.toFixed(6)}</td>
 
             if(latlngs.length > 0) {
                 polyline.setLatLngs(latlngs);
