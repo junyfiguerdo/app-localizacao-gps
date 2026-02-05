@@ -1,0 +1,212 @@
+visualizador.html<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador GPS - Figueredo Consultoria</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --color-bg: #0a0e1a;
+            --color-card: #151b2e;
+            --color-accent: #00d4ff;
+            --color-text: #c5d1e8;
+            --color-text-muted: #8a94ad;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: linear-gradient(135deg, #0a0e1a 0%, #1a1f3a 100%); color: var(--color-text); font-family: -apple-system, sans-serif; padding: 16px; min-height: 100vh; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { background: var(--color-card); border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,.08); }
+        .company-title { font-size: 14px; color: var(--color-accent); font-weight: 600; margin-bottom: 8px; }
+        h1 { font-size: 24px; color: #fff; margin-bottom: 16px; }
+        .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+        .filter-group { display: flex; flex-direction: column; gap: 6px; }
+        .filter-group label { font-size: 12px; font-weight: 600; color: var(--color-text-muted); }
+        select, input { background: #1e253d; border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 10px; color: #fff; font-size: 14px; }
+        #map { height: 500px; border-radius: 16px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,.1); z-index: 1; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 16px; }
+        .stat-card { background: var(--color-card); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,.05); text-align: center; }
+        .stat-label { font-size: 12px; color: var(--color-text-muted); margin-bottom: 4px; }
+        .stat-value { font-size: 18px; font-weight: 700; color: var(--color-accent); }
+        .table-container { background: var(--color-card); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,.08); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: rgba(255,255,255,.03); padding: 12px; text-align: left; color: var(--color-text-muted); }
+        td { padding: 12px; border-top: 1px solid rgba(255,255,255,.05); }
+        .btn-apply { background: var(--color-accent); color: #0a0e1a; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-apply:hover { background: #00b8e6; transform: translateY(-1px); }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,14,26,0.8); display: none; justify-content: center; align-items: center; z-index: 9999; }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading-overlay">Carregando...</div>
+    <div class="container">
+        <div class="header">
+            <div class="company-title">Figueredo Consultoria: Finanças e Tecnologia</div>
+            <h1>Visualizador de Rotas GPS</h1>
+            <div class="filters">
+                <div class="filter-group">
+                    <label>USUÁRIO</label>
+                    <select id="filterUsuario"><option value="">Todos</option></select>
+                </div>
+                <div class="filter-group">
+                    <label>EMPRESA</label>
+                    <select id="filterEmpresa"><option value="">Todos</option></select>
+                </div>
+                <div class="filter-group">
+                    <label>DATA INÍCIO</label>
+                    <input type="date" id="dateStart">
+                </div>
+                <div class="filter-group">
+                    <label>DATA FIM</label>
+                    <input type="date" id="dateEnd">
+                </div>
+                <button class="btn-apply" onclick="renderizar()">Aplicar Filtros</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-label">Distância Total</div><div id="distTotal" class="stat-value">0 km</div></div>
+            <div class="stat-card"><div class="stat-label">Pontos Capturados</div><div id="countPontos" class="stat-value">0</div></div>
+            <div class="stat-card"><div class="stat-label">Tempo Total</div><div id="tempoTotal" class="stat-value">0h 0m</div></div>
+        </div>
+
+        <div id="map"></div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data/Hora</th>
+                        <th>Usuário</th>
+                        <th>Empresa</th>
+                        <th>Local</th>
+                        <th>Distância</th>
+                        <th>Permanência</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYANlgnwbBvooEriVC5L5M5Az-cF3Ppqwbn9DShFVoC8rqpFQ_1Sx7XizHZsh4m1RjDQ/exec';
+        let map, polyline, markers = [];
+        let allData = [];
+
+        function initMap() {
+            map = L.map('map').setView([-20.4222, -49.9722], 13);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            polyline = L.polyline([], {color: '#00d4ff', weight: 3, opacity: 0.8}).addTo(map);
+        }
+
+        async function loadData() {
+            document.getElementById('loading').style.display = 'flex';
+            try {
+                const res = await fetch(SCRIPT_URL + '?action=getData');
+                allData = await res.json();
+                updateSelects();
+                renderizar();
+            } catch (e) { console.error(e); }
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function updateSelects() {
+            const uSet = new Set(), eSet = new Set();
+            allData.forEach(d => { if(d.usuario) uSet.add(d.usuario); if(d.empresa) eSet.add(d.empresa); });
+            
+            const uSel = document.getElementById('filterUsuario');
+            const eSel = document.getElementById('filterEmpresa');
+            
+            const uVal = uSel.value, eVal = eSel.value;
+            
+            uSel.innerHTML = '<option value="">Todos</option>';
+            eSel.innerHTML = '<option value="">Todos</option>';
+            
+            [...uSet].sort().forEach(u => uSel.innerHTML += `<option value="${u}">${u}</option>`);
+            [...eSet].sort().forEach(e => eSel.innerHTML += `<option value="${e}">${e}</option>`);
+            
+            uSel.value = uVal; eSel.value = eVal;
+        }
+
+        function calcularDistancia(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2-lat1) * Math.PI / 180;
+            const dLon = (lon2-lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        }
+
+        function renderizar() {
+            const u = document.getElementById('filterUsuario').value;
+            const e = document.getElementById('filterEmpresa').value;
+            const s = document.getElementById('dateStart').value;
+            const f = document.getElementById('dateEnd').value;
+
+            const filtered = allData.filter(d => {
+                const date = d.dataHora.split('T')[0];
+                return (!u || d.usuario === u) &&
+                       (!e || d.empresa === e) &&
+                       (!s || date >= s) &&
+                       (!f || date <= f);
+            });
+
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
+            const tbody = document.getElementById('dataTable');
+            tbody.innerHTML = '';
+            
+            let totalDist = 0, totalMs = 0, latlngs = [];
+            
+            filtered.forEach((d, i) => {
+                const pos = [d.latitude, d.longitude];
+                latlngs.push(pos);
+                
+                const marker = L.circleMarker(pos, {radius: 6, color: i === 0 ? '#10b981' : (i === filtered.length-1 ? '#ef4444' : '#00d4ff')}).addTo(map);
+                marker.bindPopup(`<b>${d.local || d.nome || 'Ponto'}</b><br>${new Date(d.dataHora).toLocaleString()}<br>Usuário: ${d.usuario}`);
+                markers.push(marker);
+
+                let distStr = '--', stayStr = '--';
+                if(i > 0) {
+                    const dPrev = filtered[i-1], dCurr = d;
+                    const dist = calcularDistancia(dPrev.latitude, dPrev.longitude, dCurr.latitude, dCurr.longitude);
+                    totalDist += dist; distStr = dist.toFixed(2) + ' km';
+                    const ms = new Date(dCurr.dataHora) - new Date(dPrev.dataHora);
+                    totalMs += ms;
+                    const mins = Math.floor(ms / 60000);
+                    stayStr = mins > 60 ? `${Math.floor(mins/60)}h ${mins%60}m` : `${mins}m`;
+                }
+
+                tbody.innerHTML += `<tr>
+                    <td>${new Date(d.dataHora).toLocaleString()}</td>
+                    <td>${d.usuario}</td>
+                    <td>${d.empresa}</td>
+                    <td>${d.local} ${d.nome ? '- '+d.nome : ''}</td>
+                    <td>${distStr}</td>
+                    <td>${stayStr}</td>
+                </tr>`;
+            });
+
+            if(latlngs.length > 0) {
+                polyline.setLatLngs(latlngs);
+                map.fitBounds(polyline.getBounds(), {padding: [50, 50]});
+            }
+            
+            document.getElementById('distTotal').textContent = totalDist.toFixed(2) + ' km';
+            document.getElementById('countPontos').textContent = filtered.length;
+            const h = Math.floor(totalMs/3600000);
+            const m = Math.floor((totalMs%3600000)/60000);
+            document.getElementById('tempoTotal').textContent = `${h}h ${m}m`;
+        }
+
+        initMap();
+        loadData();
+        setInterval(loadData, 60000);
+    </script>
+</body>
+</html>
