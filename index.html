@@ -378,22 +378,17 @@
                     };
 
                     try {
-                        const response = await fetch(SCRIPT_URL, {
+                        // USANDO MODE: 'NO-CORS' PARA EVITAR ERRO DE FETCH NO PC/GITHUB
+                        await fetch(SCRIPT_URL, {
                             method: 'POST',
-                            body: JSON.stringify(dados),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
+                            mode: 'no-cors',
+                            body: JSON.stringify(dados)
                         });
 
-                        const result = await response.json();
-                        
-                        if (result.status === 'success') {
-                            showStatus('success', '✅ Dados salvos com sucesso!');
-                            limparCampos();
-                        } else {
-                            throw new Error(result.message || 'Erro no servidor');
-                        }
+                        // Com no-cors não conseguimos ler o JSON de resposta,
+                        // mas se o fetch não deu erro, os dados foram enviados.
+                        showStatus('success', '✅ Dados enviados com sucesso!');
+                        limparCampos();
                     } catch (error) {
                         showStatus('error', '❌ Erro ao salvar: ' + error.message);
                     }
@@ -411,7 +406,7 @@
                 btn.classList.remove('btn-danger');
                 showStatus('info', '⏸️ Auto-captura pausada');
             } else {
-                capturarAgora(); // Primeira captura imediata
+                capturarAgora();
                 autoInterval = setInterval(capturarAgora, 10 * 60 * 1000);
                 btn.textContent = '⏹️ Parar Auto-captura';
                 btn.classList.add('btn-danger');
@@ -437,9 +432,8 @@
             statusDiv.innerHTML = `<span>${message}</span>`;
         }
 
-        // Inicializar GPS
         atualizarPosicao();
-        setInterval(atualizarPosicao, 30000); // Atualiza visual a cada 30s
+        setInterval(atualizarPosicao, 30000);
     </script>
 </body>
 </html>
