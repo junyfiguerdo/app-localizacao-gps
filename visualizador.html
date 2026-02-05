@@ -1,4 +1,4 @@
-visualizador.html<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -8,57 +8,67 @@ visualizador.html<!DOCTYPE html>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         :root {
-            --color-bg: #0a0e1a;
-            --color-card: #151b2e;
-            --color-accent: #00d4ff;
-            --color-text: #c5d1e8;
-            --color-text-muted: #8a94ad;
+            --color-bg-base: #0f172a;
+            --color-bg-elevated: #1e293b;
+            --color-bg-surface: #1e293b;
+            --color-bg-muted: #334155;
+            --color-text-primary: #f1f5f9;
+            --color-text-secondary: #cbd5e1;
+            --color-text-muted: #94a3b8;
+            --color-accent: #38bdf8;
+            --color-accent-hover: #0ea5e9;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(135deg, #0a0e1a 0%, #1a1f3a 100%); color: var(--color-text); font-family: -apple-system, sans-serif; padding: 16px; min-height: 100vh; }
+        body { background-color: var(--color-bg-base); color: var(--color-text-primary); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; padding: 20px; line-height: 1.6; }
         .container { max-width: 1400px; margin: 0 auto; }
-        .header { background: var(--color-card); border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,.08); }
-        .company-title { font-size: 14px; color: var(--color-accent); font-weight: 600; margin-bottom: 8px; }
-        h1 { font-size: 24px; color: #fff; margin-bottom: 16px; }
-        .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
-        .filter-group { display: flex; flex-direction: column; gap: 6px; }
-        .filter-group label { font-size: 12px; font-weight: 600; color: var(--color-text-muted); }
-        select, input { background: #1e253d; border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 10px; color: #fff; font-size: 14px; }
-        #map { height: 500px; border-radius: 16px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,.1); z-index: 1; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 16px; }
-        .stat-card { background: var(--color-card); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,.05); text-align: center; }
-        .stat-label { font-size: 12px; color: var(--color-text-muted); margin-bottom: 4px; }
-        .stat-value { font-size: 18px; font-weight: 700; color: var(--color-accent); }
-        .table-container { background: var(--color-card); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,.08); }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { background: rgba(255,255,255,.03); padding: 12px; text-align: left; color: var(--color-text-muted); }
-        td { padding: 12px; border-top: 1px solid rgba(255,255,255,.05); }
-        .btn-apply { background: var(--color-accent); color: #0a0e1a; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .btn-apply:hover { background: #00b8e6; transform: translateY(-1px); }
-        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,14,26,0.8); display: none; justify-content: center; align-items: center; z-index: 9999; }
+        .header { background: var(--color-bg-elevated); border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border: 1px solid var(--color-bg-muted); }
+        .company-title { font-size: 14px; color: var(--color-accent); font-weight: 600; margin-bottom: 8px; letter-spacing: 0.5px; }
+        h1 { font-size: 26px; color: #fff; margin-bottom: 20px; font-weight: 700; }
+        .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 5px; }
+        .filter-group { display: flex; flex-direction: column; gap: 8px; }
+        .filter-group label { font-size: 12px; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; }
+        select, input { background: var(--color-bg-base); border: 1px solid var(--color-bg-muted); border-radius: 8px; padding: 12px; color: #fff; font-size: 14px; transition: border-color 0.2s; }
+        select:focus, input:focus { outline: none; border-color: var(--color-accent); }
+        #map { height: 550px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--color-bg-muted); box-shadow: 0 4px 10px rgba(0,0,0,0.4); z-index: 1; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: var(--color-bg-elevated); padding: 20px; border-radius: 12px; border: 1px solid var(--color-bg-muted); text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .stat-label { font-size: 13px; color: var(--color-text-muted); margin-bottom: 6px; font-weight: 500; }
+        .stat-value { font-size: 22px; font-weight: 700; color: var(--color-accent); }
+        .table-container { background: var(--color-bg-elevated); border-radius: 12px; overflow: auto; border: 1px solid var(--color-bg-muted); box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 800px; }
+        th { background: rgba(255,255,255,0.05); padding: 15px; text-align: left; color: var(--color-text-muted); font-weight: 600; border-bottom: 1px solid var(--color-bg-muted); }
+        td { padding: 15px; border-top: 1px solid rgba(255,255,255,0.03); color: var(--color-text-secondary); }
+        tr:hover td { background: rgba(56, 189, 248, 0.05); color: #fff; }
+        .btn-apply { background: var(--color-accent); color: var(--color-bg-base); border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; align-self: flex-end; }
+        .btn-apply:hover { background: var(--color-accent-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); display: none; justify-content: center; align-items: center; z-index: 9999; font-weight: 600; color: var(--color-accent); font-size: 18px; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-bg-base); }
+        ::-webkit-scrollbar-thumb { background: var(--color-bg-muted); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--color-bg-elevated); }
     </style>
 </head>
 <body>
-    <div id="loading" class="loading-overlay">Carregando...</div>
+    <div id="loading" class="loading-overlay">⌛ Carregando dados...</div>
     <div class="container">
         <div class="header">
             <div class="company-title">Figueredo Consultoria: Finanças e Tecnologia</div>
-            <h1>Visualizador de Rotas GPS</h1>
+            <h1>🌍 Visualizador de Rotas GPS</h1>
             <div class="filters">
                 <div class="filter-group">
-                    <label>USUÁRIO</label>
+                    <label>👤 Usuário</label>
                     <select id="filterUsuario"><option value="">Todos</option></select>
                 </div>
                 <div class="filter-group">
-                    <label>EMPRESA</label>
+                    <label>🏢 Empresa</label>
                     <select id="filterEmpresa"><option value="">Todos</option></select>
                 </div>
                 <div class="filter-group">
-                    <label>DATA INÍCIO</label>
+                    <label>📅 Início</label>
                     <input type="date" id="dateStart">
                 </div>
                 <div class="filter-group">
-                    <label>DATA FIM</label>
+                    <label>📅 Fim</label>
                     <input type="date" id="dateEnd">
                 </div>
                 <button class="btn-apply" onclick="renderizar()">Aplicar Filtros</button>
@@ -66,9 +76,9 @@ visualizador.html<!DOCTYPE html>
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card"><div class="stat-label">Distância Total</div><div id="distTotal" class="stat-value">0 km</div></div>
-            <div class="stat-card"><div class="stat-label">Pontos Capturados</div><div id="countPontos" class="stat-value">0</div></div>
-            <div class="stat-card"><div class="stat-label">Tempo Total</div><div id="tempoTotal" class="stat-value">0h 0m</div></div>
+            <div class="stat-card"><div class="stat-label">🛣️ Distância Total</div><div id="distTotal" class="stat-value">0 km</div></div>
+            <div class="stat-card"><div class="stat-label">📍 Pontos</div><div id="countPontos" class="stat-value">0</div></div>
+            <div class="stat-card"><div class="stat-label">⏱️ Tempo Total</div><div id="tempoTotal" class="stat-value">0h 0m</div></div>
         </div>
 
         <div id="map"></div>
@@ -77,12 +87,12 @@ visualizador.html<!DOCTYPE html>
             <table>
                 <thead>
                     <tr>
-                        <th>Data/Hora</th>
-                        <th>Usuário</th>
-                        <th>Empresa</th>
-                        <th>Local</th>
-                        <th>Distância</th>
-                        <th>Permanência</th>
+                        <th>🕒 Data/Hora</th>
+                        <th>👤 Usuário</th>
+                        <th>🏢 Empresa</th>
+                        <th>📍 Local</th>
+                        <th>📏 Distância</th>
+                        <th>⏳ Permanência</th>
                     </tr>
                 </thead>
                 <tbody id="dataTable"></tbody>
@@ -98,9 +108,9 @@ visualizador.html<!DOCTYPE html>
         function initMap() {
             map = L.map('map').setView([-20.4222, -49.9722], 13);
             L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '© OpenStreetMap contributors'
+                attribution: '© OpenStreetMap'
             }).addTo(map);
-            polyline = L.polyline([], {color: '#00d4ff', weight: 3, opacity: 0.8}).addTo(map);
+            polyline = L.polyline([], {color: '#38bdf8', weight: 4, opacity: 0.8}).addTo(map);
         }
 
         async function loadData() {
@@ -110,7 +120,10 @@ visualizador.html<!DOCTYPE html>
                 allData = await res.json();
                 updateSelects();
                 renderizar();
-            } catch (e) { console.error(e); }
+            } catch (e) { 
+                console.error(e);
+                alert('Erro ao carregar dados. Verifique a conexão.');
+            }
             document.getElementById('loading').style.display = 'none';
         }
 
@@ -120,7 +133,6 @@ visualizador.html<!DOCTYPE html>
             
             const uSel = document.getElementById('filterUsuario');
             const eSel = document.getElementById('filterEmpresa');
-            
             const uVal = uSel.value, eVal = eSel.value;
             
             uSel.innerHTML = '<option value="">Todos</option>';
@@ -167,16 +179,28 @@ visualizador.html<!DOCTYPE html>
                 const pos = [d.latitude, d.longitude];
                 latlngs.push(pos);
                 
-                const marker = L.circleMarker(pos, {radius: 6, color: i === 0 ? '#10b981' : (i === filtered.length-1 ? '#ef4444' : '#00d4ff')}).addTo(map);
-                marker.bindPopup(`<b>${d.local || d.nome || 'Ponto'}</b><br>${new Date(d.dataHora).toLocaleString()}<br>Usuário: ${d.usuario}`);
+                const marker = L.circleMarker(pos, {
+                    radius: 7, 
+                    color: i === 0 ? '#10b981' : (i === filtered.length-1 ? '#ef4444' : '#38bdf8'),
+                    fillOpacity: 0.8,
+                    weight: 2
+                }).addTo(map);
+                
+                marker.bindPopup(`
+                    <div style="color:#1e293b; font-family:sans-serif;">
+                        <b style="font-size:14px; color:#0f172a;">${d.local || d.nome || 'Ponto'}</b><br>
+                        <span style="font-size:12px;">🕒 ${new Date(d.dataHora).toLocaleString()}</span><br>
+                        <span style="font-size:12px;">👤 ${d.usuario || '--'}</span>
+                    </div>
+                `);
                 markers.push(marker);
 
                 let distStr = '--', stayStr = '--';
                 if(i > 0) {
-                    const dPrev = filtered[i-1], dCurr = d;
-                    const dist = calcularDistancia(dPrev.latitude, dPrev.longitude, dCurr.latitude, dCurr.longitude);
+                    const dPrev = filtered[i-1];
+                    const dist = calcularDistancia(dPrev.latitude, dPrev.longitude, d.latitude, d.longitude);
                     totalDist += dist; distStr = dist.toFixed(2) + ' km';
-                    const ms = new Date(dCurr.dataHora) - new Date(dPrev.dataHora);
+                    const ms = new Date(d.dataHora) - new Date(dPrev.dataHora);
                     totalMs += ms;
                     const mins = Math.floor(ms / 60000);
                     stayStr = mins > 60 ? `${Math.floor(mins/60)}h ${mins%60}m` : `${mins}m`;
@@ -184,9 +208,9 @@ visualizador.html<!DOCTYPE html>
 
                 tbody.innerHTML += `<tr>
                     <td>${new Date(d.dataHora).toLocaleString()}</td>
-                    <td>${d.usuario}</td>
-                    <td>${d.empresa}</td>
-                    <td>${d.local} ${d.nome ? '- '+d.nome : ''}</td>
+                    <td>${d.usuario || '--'}</td>
+                    <td>${d.empresa || '--'}</td>
+                    <td>${d.local || '--'} ${d.nome ? '- '+d.nome : ''}</td>
                     <td>${distStr}</td>
                     <td>${stayStr}</td>
                 </tr>`;
