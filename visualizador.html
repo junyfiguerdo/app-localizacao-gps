@@ -87,6 +87,11 @@
                         <th>👤 Usuário</th>
                         <th>🏢 Empresa</th>
                         <th>📍 Local</th>
+                                                        <th>🏷️ Nome do Lugar</th>
+                                                        <th>🏠 Endereço</th>
+                                                        <th>🏙️ Cidade</th>
+                                                        <th>💰 Valor</th>
+                                                        <th>📝 Observação</th>
                                                 <th>🌐 Latitude</th>
                                                 <th>🌐 Longitude</th>
                         <th>📏 Distância</th>
@@ -170,7 +175,7 @@
                 const pos = [d.latitude, d.longitude];
                 latlngs.push(pos);
                 const marker = L.circleMarker(pos, {radius: 7, color: i === 0 ? '#10b981' : (i === filtered.length-1 ? '#ef4444' : '#38bdf8')}).addTo(map);
-                marker.bindPopup(`<b>${d.local || d.nome || 'Ponto'}</b><br>🕒 ${new Date(d.dataHora).toLocaleString()}<br>👤 ${d.usuario || '--'}`);
+                marker.bindPopup(`<b>${d.nome || 'Ponto'}</b><br>🕒 ${new Date(d.dataHora).toLocaleString()}<br>👤 ${d.usuario || '--'}`);
                 markers.push(marker);
 
                 let distStr = '--', stayStr = '--';
@@ -189,6 +194,11 @@
                     <td>${d.usuario || '--'}</td>
                     <td>${d.empresa || '--'}</td>
                     <td>${d.local || '--'} ${d.nome ? '- '+d.nome : ''}</td>
+                                    <td>${d.nome || '--'}</td>
+                                                    <td>${d.endereco || '--'}</td>
+                                                                    <td>${d.cidade || '--'}</td>
+                                                                                    <td>${d.valor || '--'}</td>
+                                                                                                    <td>${d.observacao || '--'}</td>
                     <td>${distStr}</td>
                     <td>${stayStr}</td>
                 </tr>`;
