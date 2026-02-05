@@ -19,237 +19,38 @@
             --color-danger: #ef4444;
             --color-warning: #f59e0b;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--color-bg-base);
-            color: var(--color-text-primary);
-            line-height: 1.6;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--color-bg-elevated) 0%, var(--color-bg-surface) 100%);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .header h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-            color: var(--color-accent);
-        }
-
-        .header p {
-            color: var(--color-text-secondary);
-            font-size: 14px;
-        }
-
-        .card {
-            background-color: var(--color-bg-elevated);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .status {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .status.success {
-            background-color: rgba(16, 185, 129, 0.1);
-            border: 1px solid var(--color-success);
-            color: var(--color-success);
-        }
-
-        .status.error {
-            background-color: rgba(239, 68, 68, 0.1);
-            border: 1px solid var(--color-danger);
-            color: var(--color-danger);
-        }
-
-        .status.info {
-            background-color: rgba(56, 189, 248, 0.1);
-            border: 1px solid var(--color-accent);
-            color: var(--color-accent);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--color-text-secondary);
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        input[type="text"],
-        input[type="number"],
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--color-bg-muted);
-            border-radius: 8px;
-            background-color: var(--color-bg-surface);
-            color: var(--color-text-primary);
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        input:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 14px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 12px;
-        }
-
-        .btn-primary {
-            background-color: var(--color-accent);
-            color: var(--color-bg-base);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--color-accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(56, 189, 248, 0.3);
-        }
-
-        .btn-secondary {
-            background-color: var(--color-bg-muted);
-            color: var(--color-text-primary);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--color-bg-surface);
-            transform: translateY(-2px);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .info-item {
-            background-color: var(--color-bg-surface);
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        .info-item .label {
-            color: var(--color-text-muted);
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-
-        .info-item .value {
-            color: var(--color-text-primary);
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--color-accent);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .photo-preview {
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .photo-preview img {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 8px;
-            border: 2px solid var(--color-bg-muted);
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-
-        .file-input-label {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: var(--color-bg-surface);
-            border: 2px dashed var(--color-bg-muted);
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: var(--color-text-secondary);
-        }
-
-        .file-input-label:hover {
-            border-color: var(--color-accent);
-            background-color: rgba(56, 189, 248, 0.05);
-        }
-
-        @media (max-width: 600px) {
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--color-bg-base); color: var(--color-text-primary); line-height: 1.6; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, var(--color-bg-elevated) 0%, var(--color-bg-surface) 100%); border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); }
+        .header h1 { font-size: 24px; margin-bottom: 5px; color: var(--color-accent); }
+        .header p { color: var(--color-text-secondary); font-size: 14px; }
+        .card { background-color: var(--color-bg-elevated); border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); }
+        .status { padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .status.success { background-color: rgba(16, 185, 129, 0.1); border: 1px solid var(--color-success); color: var(--color-success); }
+        .status.error { background-color: rgba(239, 68, 68, 0.1); border: 1px solid var(--color-danger); color: var(--color-danger); }
+        .status.info { background-color: rgba(56, 189, 248, 0.1); border: 1px solid var(--color-accent); color: var(--color-accent); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: var(--color-text-secondary); font-weight: 500; font-size: 14px; }
+        input[type="text"], input[type="number"], textarea { width: 100%; padding: 12px; border: 1px solid var(--color-bg-muted); border-radius: 8px; background-color: var(--color-bg-surface); color: var(--color-text-primary); font-size: 14px; transition: all 0.3s ease; }
+        input:focus, textarea:focus { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1); }
+        textarea { resize: vertical; min-height: 80px; }
+        .btn { display: block; width: 100%; padding: 14px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-bottom: 12px; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg-base); }
+        .btn-primary:hover { background-color: var(--color-accent-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(56, 189, 248, 0.3); }
+        .btn-secondary { background-color: var(--color-bg-muted); color: var(--color-text-primary); }
+        .btn-warning { background-color: var(--color-warning); color: var(--color-bg-base); }
+        .btn-danger { background-color: var(--color-danger); color: white; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+        .info-item { background-color: var(--color-bg-surface); padding: 15px; border-radius: 8px; }
+        .info-item .label { color: var(--color-text-muted); font-size: 12px; margin-bottom: 5px; }
+        .info-item .value { color: var(--color-text-primary); font-size: 16px; font-weight: 600; }
+        .photo-preview { margin-top: 15px; text-align: center; }
+        .photo-preview img { max-width: 100%; max-height: 300px; border-radius: 8px; border: 2px solid var(--color-bg-muted); }
+        input[type="file"] { display: none; }
+        .file-input-label { display: block; width: 100%; padding: 12px; background-color: var(--color-bg-surface); border: 2px dashed var(--color-bg-muted); border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.3s ease; color: var(--color-text-secondary); }
+        .file-input-label:hover { border-color: var(--color-accent); background-color: rgba(56, 189, 248, 0.05); }
+        @media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -258,182 +59,109 @@
             <h1>🌍 App Localização GPS</h1>
             <p>Figueredo Consultoria: Finanças e Tecnologia</p>
         </div>
-
         <div class="card">
-            <div id="status" class="status info">
-                <span class="loading"></span>
-                <span>Inicializando...</span>
-            </div>
-
+            <div id="status" class="status info"><span>Inicializando...</span></div>
             <div class="info-grid">
-                <div class="info-item">
-                    <div class="label">Latitude</div>
-                    <div class="value" id="latitude">--</div>
-                </div>
-                <div class="info-item">
-                    <div class="label">Longitude</div>
-                    <div class="value" id="longitude">--</div>
-                </div>
+                <div class="info-item"><div class="label">Latitude</div><div class="value" id="latitude">--</div></div>
+                <div class="info-item"><div class="label">Longitude</div><div class="value" id="longitude">--</div></div>
             </div>
-
+            <div class="form-group">
+                <label for="usuario">👤 Nome do Usuário (Profissional)</label>
+                <input type="text" id="usuario" placeholder="Nome do profissional">
+            </div>
+            <div class="form-group">
+                <label for="empresa">🏢 Empresa</label>
+                <input type="text" id="empresa" placeholder="Nome da empresa">
+            </div>
             <div class="form-group">
                 <label for="local">📍 Local</label>
                 <input type="text" id="local" placeholder="Ex: Escritório, Cliente A, etc.">
             </div>
-
             <div class="form-group">
-                <label for="nome">🏢 Nome</label>
-                <input type="text" id="nome" placeholder="Nome do lugar">
+                <label for="nome">🏷️ Nome do Lugar</label>
+                <input type="text" id="nome" placeholder="Nome do estabelecimento">
             </div>
-
             <div class="form-group">
                 <label for="endereco">🏠 Endereço</label>
                 <input type="text" id="endereco" placeholder="Rua, número, bairro">
             </div>
-
             <div class="form-group">
                 <label for="cidade">🌆 Cidade</label>
                 <input type="text" id="cidade" placeholder="Cidade - UF">
             </div>
-
             <div class="form-group">
                 <label for="valor">💰 Valor (R$)</label>
                 <input type="number" id="valor" placeholder="0.00" step="0.01">
             </div>
-
             <div class="form-group">
                 <label for="observacao">📝 Observação</label>
                 <textarea id="observacao" placeholder="Notas adicionais..."></textarea>
             </div>
-
             <div class="form-group">
                 <label>📷 Foto do Local</label>
                 <input type="file" id="photoInput" accept="image/*" capture="environment">
-                <label for="photoInput" class="file-input-label">
-                    📸 Tirar/Selecionar Foto
-                </label>
+                <label for="photoInput" class="file-input-label">📸 Tirar/Selecionar Foto</label>
                 <div id="photoPreview" class="photo-preview"></div>
             </div>
-
             <button class="btn btn-primary" onclick="capturarAgora()">📍 Capturar Agora</button>
+            <button class="btn btn-warning" onclick="limparCamposForm()">🧹 Limpar Formulário (Mantém Usuário/Empresa)</button>
             <button class="btn btn-secondary" onclick="toggleAutoCaptura()" id="autoBtn">⏱️ Iniciar Captura Automática (10min)</button>
         </div>
     </div>
-
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYANlgnwbBvooEriVC5L5M5Az-cF3Ppqwbn9DShFVoC8rqpFQ_1Sx7XizHZsh4m1RjDQ/exec';
         let autoInterval = null;
         let currentPhoto = null;
-
         function atualizarPosicao() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        document.getElementById('latitude').textContent = position.coords.latitude.toFixed(6);
-                        document.getElementById('longitude').textContent = position.coords.longitude.toFixed(6);
-                        showStatus('success', '✅ GPS atualizado');
-                    },
-                    (error) => {
-                        showStatus('error', '❌ Erro ao obter GPS: ' + error.message);
-                    }
+                    (p) => { document.getElementById('latitude').textContent = p.coords.latitude.toFixed(6); document.getElementById('longitude').textContent = p.coords.longitude.toFixed(6); showStatus('success', '✅ GPS OK'); },
+                    (e) => showStatus('error', '❌ Erro GPS: ' + e.message)
                 );
-            } else {
-                showStatus('error', '❌ Geolocalização não suportada');
             }
         }
-
         document.getElementById('photoInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentPhoto = e.target.result;
-                    document.getElementById('photoPreview').innerHTML = `<img src="${currentPhoto}" alt="Preview">`;
-                };
+                reader.onload = (e) => { currentPhoto = e.target.result; document.getElementById('photoPreview').innerHTML = `<img src="${currentPhoto}">`; };
                 reader.readAsDataURL(file);
             }
         });
-
         async function capturarAgora() {
-            showStatus('info', '📡 Capturando dados...');
-            
-            if (!navigator.geolocation) {
-                showStatus('error', '❌ Geolocalização não suportada');
-                return;
-            }
-
-            navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    const dados = {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                        dataHora: new Date().toISOString(),
-                        local: document.getElementById('local').value,
-                        nome: document.getElementById('nome').value,
-                        endereco: document.getElementById('endereco').value,
-                        cidade: document.getElementById('cidade').value,
-                        valor: document.getElementById('valor').value,
-                        observacao: document.getElementById('observacao').value,
-                        foto: currentPhoto
-                    };
-
-                    try {
-                        // USANDO MODE: 'NO-CORS' PARA EVITAR ERRO DE FETCH NO PC/GITHUB
-                        await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            mode: 'no-cors',
-                            body: JSON.stringify(dados)
-                        });
-
-                        // Com no-cors não conseguimos ler o JSON de resposta,
-                        // mas se o fetch não deu erro, os dados foram enviados.
-                        showStatus('success', '✅ Dados enviados com sucesso!');
-                        limparCampos();
-                    } catch (error) {
-                        showStatus('error', '❌ Erro ao salvar: ' + error.message);
-                    }
-                },
-                (error) => showStatus('error', '❌ Erro GPS: ' + error.message)
-            );
+            showStatus('info', '📡 Enviando...');
+            navigator.geolocation.getCurrentPosition(async (p) => {
+                const dados = {
+                    latitude: p.coords.latitude, longitude: p.coords.longitude,
+                    dataHora: new Date().toISOString(),
+                    usuario: document.getElementById('usuario').value,
+                    empresa: document.getElementById('empresa').value,
+                    local: document.getElementById('local').value,
+                    nome: document.getElementById('nome').value,
+                    endereco: document.getElementById('endereco').value,
+                    cidade: document.getElementById('cidade').value,
+                    valor: document.getElementById('valor').value,
+                    observacao: document.getElementById('observacao').value,
+                    foto: currentPhoto
+                };
+                try {
+                    await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dados) });
+                    showStatus('success', '✅ Salvo!');
+                    limparCamposForm();
+                } catch (err) { showStatus('error', '❌ Erro: ' + err.message); }
+            });
         }
-
         function toggleAutoCaptura() {
             const btn = document.getElementById('autoBtn');
-            if (autoInterval) {
-                clearInterval(autoInterval);
-                autoInterval = null;
-                btn.textContent = '⏱️ Iniciar Captura Automática (10min)';
-                btn.classList.remove('btn-danger');
-                showStatus('info', '⏸️ Auto-captura pausada');
-            } else {
-                capturarAgora();
-                autoInterval = setInterval(capturarAgora, 10 * 60 * 1000);
-                btn.textContent = '⏹️ Parar Auto-captura';
-                btn.classList.add('btn-danger');
-                showStatus('success', '▶️ Auto-captura ativa (10min)');
-            }
+            if (autoInterval) { clearInterval(autoInterval); autoInterval = null; btn.textContent = '⏱️ Iniciar Auto (10min)'; btn.classList.remove('btn-danger'); }
+            else { capturarAgora(); autoInterval = setInterval(capturarAgora, 600000); btn.textContent = '⏹️ Parar Auto'; btn.classList.add('btn-danger'); }
         }
-
-        function limparCampos() {
-            document.getElementById('local').value = '';
-            document.getElementById('nome').value = '';
-            document.getElementById('endereco').value = '';
-            document.getElementById('cidade').value = '';
-            document.getElementById('valor').value = '';
-            document.getElementById('observacao').value = '';
-            document.getElementById('photoInput').value = '';
-            document.getElementById('photoPreview').innerHTML = '';
-            currentPhoto = null;
+        function limparCamposForm() {
+            ['local','nome','endereco','cidade','valor','observacao','photoInput'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('photoPreview').innerHTML = ''; currentPhoto = null;
         }
-
-        function showStatus(type, message) {
-            const statusDiv = document.getElementById('status');
-            statusDiv.className = `status ${type}`;
-            statusDiv.innerHTML = `<span>${message}</span>`;
-        }
-
-        atualizarPosicao();
-        setInterval(atualizarPosicao, 30000);
+        function showStatus(t, m) { const s = document.getElementById('status'); s.className = `status ${t}`; s.innerHTML = `<span>${m}</span>`; }
+        atualizarPosicao(); setInterval(atualizarPosicao, 30000);
     </script>
 </body>
 </html>
