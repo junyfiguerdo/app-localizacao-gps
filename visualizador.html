@@ -42,10 +42,6 @@
         .btn-apply { background: var(--color-accent); color: var(--color-bg-base); border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; align-self: flex-end; }
         .btn-apply:hover { background: var(--color-accent-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); display: none; justify-content: center; align-items: center; z-index: 9999; font-weight: 600; color: var(--color-accent); font-size: 18px; }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: var(--color-bg-base); }
-        ::-webkit-scrollbar-thumb { background: var(--color-bg-muted); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--color-bg-elevated); }
     </style>
 </head>
 <body>
@@ -121,26 +117,20 @@
                 allData = json.data || [];
                 updateSelects();
                 renderizar();
-            } catch (e) { 
-                console.error(e);
-            }
+            } catch (e) { console.error(e); }
             document.getElementById('loading').style.display = 'none';
         }
 
         function updateSelects() {
             const uSet = new Set(), eSet = new Set();
             allData.forEach(d => { if(d.usuario) uSet.add(d.usuario); if(d.empresa) eSet.add(d.empresa); });
-            
             const uSel = document.getElementById('filterUsuario');
             const eSel = document.getElementById('filterEmpresa');
             const uVal = uSel.value, eVal = eSel.value;
-            
             uSel.innerHTML = '<option value="">Todos</option>';
             eSel.innerHTML = '<option value="">Todos</option>';
-            
             [...uSet].sort().forEach(u => uSel.innerHTML += `<option value="${u}">${u}</option>`);
             [...eSet].sort().forEach(e => eSel.innerHTML += `<option value="${e}">${e}</option>`);
-            
             uSel.value = uVal; eSel.value = eVal;
         }
 
@@ -178,21 +168,8 @@
             filtered.forEach((d, i) => {
                 const pos = [d.latitude, d.longitude];
                 latlngs.push(pos);
-                
-                const marker = L.circleMarker(pos, {
-                    radius: 7, 
-                    color: i === 0 ? '#10b981' : (i === filtered.length-1 ? '#ef4444' : '#38bdf8'),
-                    fillOpacity: 0.8,
-                    weight: 2
-                }).addTo(map);
-                
-                marker.bindPopup(`
-                    <div style="color:#1e293b; font-family:sans-serif;">
-                        <b style="font-size:14px; color:#0f172a;">${d.local || d.nome || 'Ponto'}</b><br>
-                        <span style="font-size:12px;">🕒 ${new Date(d.dataHora).toLocaleString()}</span><br>
-                        <span style="font-size:12px;">👤 ${d.usuario || '--'}</span>
-                    </div>
-                `);
+                const marker = L.circleMarker(pos, {radius: 7, color: i === 0 ? '#10b981' : (i === filtered.length-1 ? '#ef4444' : '#38bdf8')}).addTo(map);
+                marker.bindPopup(`<b>${d.local || d.nome || 'Ponto'}</b><br>🕒 ${new Date(d.dataHora).toLocaleString()}<br>👤 ${d.usuario || '--'}`);
                 markers.push(marker);
 
                 let distStr = '--', stayStr = '--';
@@ -220,7 +197,6 @@
                 polyline.setLatLngs(latlngs);
                 map.fitBounds(polyline.getBounds(), {padding: [50, 50]});
             }
-            
             document.getElementById('distTotal').textContent = totalDist.toFixed(2) + ' km';
             document.getElementById('countPontos').textContent = filtered.length;
             const h = Math.floor(totalMs/3600000);
