@@ -93,6 +93,10 @@
                 <label for="valor">💰 Valor (R$)</label>
                 <input type="number" id="valor" placeholder="0.00" step="0.01">
             </div>
+             <div class="form-group">
+  <label for="tempo">⏱️ Tempo de Captura (Minutos)</label>
+  <input type="number" id="tempo" min="1" max="100" value="5" placeholder="5">
+ </div>
             <div class="form-group">
                 <label for="observacao">📝 Observação</label>
                 <textarea id="observacao" placeholder="Notas adicionais..."></textarea>
@@ -154,10 +158,10 @@
         function toggleAutoCaptura() {
             const btn = document.getElementById('autoBtn');
             if (autoInterval) { clearInterval(autoInterval); autoInterval = null; btn.textContent = '⏱️ Iniciar Auto (10min)'; btn.classList.remove('btn-danger'); }
-            else { capturarAgora(); autoInterval = setInterval(capturarAgora, 600000); btn.textContent = '⏹️ Parar Auto'; btn.classList.add('btn-danger'); }
+            else { capturarAgora(); autoInterval = setInterval(capturarAgora, parseInt(document.getElementById('tempo').value || 5) * 60000); btn.textContent = '⏹️ Parar Auto'; btn.classList.add('btn-danger'); }
         }
         function limparCamposForm() {
-            ['local','nome','endereco','cidade','valor','observacao','photoInput'].forEach(id => document.getElementById(id).value = '');
+            ['local','nome','endereco','cidade','valor','observacao,'tempo',','photoInput'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('photoPreview').innerHTML = ''; currentPhoto = null;
         }
         function showStatus(t, m) { const s = document.getElementById('status'); s.className = `status ${t}`; s.innerHTML = `<span>${m}</span>`; }
