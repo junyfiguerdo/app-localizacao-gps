@@ -104,7 +104,7 @@
     </div>
 
     <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTWQ3DEwvHuLmVCLixE6Uua96dL-BkPYIEzmdAD7xHz4p42PahTD9LS2-yCwSZ5Z3JNg/exec';        let map, polyline, markers = [];
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYANlgnwbBvooEriVC5L5M5Az-cF3Ppqwbn9DShFVoC8rqpFQ_1Sx7XizHZsh4m1RjDQ/exec';        let map, polyline, markers = [];
         let allData = [];
 
         function initMap() {
@@ -200,11 +200,9 @@
                                                                                     <td>${d.valor || '--'}</td>
                                                                                                     <td>${d.observacao || '--'}</td>
                     <td>${distStr}</td>
-                    <td>${stayStr}</td>
+                    <td>${stayStr}</td> <td>${d.latitude.toFixed(6)}</td> <td>${d.longitude.toFixed(6)}</td>
                 </tr>`;
             });
-                            <td>${d.latitude.toFixed(6)}</td>
-                            <td>${d.longitude.toFixed(6)}</td>
 
             if(latlngs.length > 0) {
                 polyline.setLatLngs(latlngs);
