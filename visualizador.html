@@ -121,8 +121,16 @@
                 const res = await fetch(SCRIPT_URL + '?action=getData');
                 const json = await res.json();
                 allData = json.data || [];
-                if (!allData || allData.length === 0) { allData = [{dataHora:'2024-02-06T10:00:00',usuario:'Teste',empresa:'Figueredo',local:'Escritório',nome:'Local Teste',endereco:'Rua Teste 123',cidade:'São Paulo',valor:'500.00',observacao:'Dados de Teste',latitude:-20.4222,longitude:-49.9722,foto:null},{dataHora:'2024-02-06T10:30:00',usuario:'Teste',empresa:'Figueredo',local:'Cliente A',nome:'Visita Cliente',endereco:'Av. Brasil 456',cidade:'São Paulo',valor:'1000.00',observacao:'Reunião concluída',latitude:-20.4300,longitude:-49.9800,foto:null}]; }
-                updateSelects();
+            // Log para debug
+            console.log('Dados recebidos:', json);
+            console.log('Total de registros:', allData.length);
+            
+            if (!allData || allData.length === 0) {
+                console.warn('⚠️ ATENÇÃO: Nenhum dado foi retornado do servidor!');
+                console.warn('Verifique se o Apps Script está funcionando corretamente.');
+                console.warn('URL sendo consultada:', SCRIPT_URL + '?action=getData');
+                alert('Nenhum dado encontrado! Verifique:\n1. Se você já capturou dados\n2. Se a URL do Apps Script está correta\n3. Se o Apps Script tem permissões adequadas');
+            }                updateSelects();
                 renderizar();
             } catch (e) { console.error(e); }
             document.getElementById('loading').style.display = 'none';
