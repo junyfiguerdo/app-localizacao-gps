@@ -227,6 +227,8 @@ function atualizarPosicao() {
             document.getElementById('photoPreview').innerHTML = ''; currentPhoto = null;
         }
         function showStatus(t, m) { const s = document.getElementById('status'); s.className = `status ${t}`; s.innerHTML = `<span>${m}</span>`; }
+                console.log('=== SCRIPT INICIADO ===');
+                showStatus('info', '📡 Solicitando permissão de localização. Por favor, PERMITA quando o navegador pedir!');
         atualizarPosicao(); setInterval(atualizarPosicao, 30000);
     </script>
 </body>
