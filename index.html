@@ -116,14 +116,61 @@
         const SCRIPT_URL = https://script.google.com/macros/s/AKfycbyS7ky481_jHlTVAfzbMeWXxv7e-M2RL_45qZ2iMfyFvJz8QYfx0OefHPIH4EGuJ7dd/exec;
         let autoInterval = null;
         let currentPhoto = null;
-        function atualizarPosicao() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (p) => { document.getElementById('latitude').textContent = p.coords.latitude.toFixed(6); document.getElementById('longitude').textContent = p.coords.longitude.toFixed(6); showStatus('success', '✅ GPS OK'); },
-                    (e) => showStatus('error', '❌ Erro GPS: ' + e.message)
-                );
-            }
+function atualizarPosicao() {
+        console.log('🔍 Tentando obter localização GPS...');
+        
+        // Verifica se geolocalização está disponível
+        if (!navigator.geolocation) {
+            console.error('❌ Geolocalização não suportada pelo navegador');
+            showStatus('error', '❌ GPS não disponível neste navegador');
+            return;
         }
+        
+        // Verifica se está em contexto seguro (HTTPS ou localhost)
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            console.warn('⚠️ Geolocalização requer HTTPS. Protocolo atual:', location.protocol);
+        }
+        
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        };
+        
+        navigator.geolocation.getCurrentPosition(
+            (p) => {
+                console.log('✅ GPS obtido:', p.coords.latitude, p.coords.longitude);
+                document.getElementById('latitude').textContent = p.coords.latitude.toFixed(6);
+                document.getElementById('longitude').textContent = p.coords.longitude.toFixed(6);
+                showStatus('success', '✅ GPS OK');
+            },
+            (error) => {
+                console.error('❌ Erro GPS:', error);
+                let mensagem = '❌ Erro GPS: ';
+                
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        mensagem += 'Permissão negada. Por favor, permita o acesso à localização.';
+                        console.error('Usuário negou permissão de localização');
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        mensagem += 'Localização indisponível. Verifique se o GPS está ativado.';
+                        console.error('Posição indisponível');
+                        break;
+                    case error.TIMEOUT:
+                        mensagem += 'Tempo esgotado. Tentando novamente...';
+                        console.error('Timeout ao obter localização');
+                        break;
+                    default:
+                        mensagem += error.message || 'Erro desconhecido';
+                        console.error('Erro desconhecido:', error);
+                }
+                
+                showStatus('error', mensagem);
+            },
+            options
+        );
+    }
         document.getElementById('photoInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
