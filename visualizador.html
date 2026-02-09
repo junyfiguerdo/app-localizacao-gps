@@ -217,8 +217,8 @@
 
         initMap();
         loadData();
-        if (allData.length === 0) { allData = [{dataHora:'2024-02-06T10:00:00',usuario:'Teste',empresa:'Figueredo',local:'Escritório',nome:'Local Teste',endereco:'Rua Teste 123',cidade:'São Paulo',valor:'500.00',observacao:'Dados de Teste',latitude:-20.4222,longitude:-49.9722,foto:null},{dataHora:'2024-02-06T10:30:00',usuario:'Teste',empresa:'Figueredo',local:'Cliente A',nome:'Visita Cliente',endereco:'Av. Brasil 456',cidade:'São Paulo',valor:'1000.00',observacao:'Reunião concluída',latitude:-20.4300,longitude:-49.9800,foto:null}]; updateSelects(); renderizar(); }
-        setInterval(loadData, 60000);
+        setTimeout(() => { if (allData.length === 0) { allData = [{dataHora:'2024-02-06T10:00:00',usuario:'Teste',empresa:'Figueredo',local:'Escritório',nome:'Local Teste',endereco:'Rua Teste 123',cidade:'São Paulo',valor:'500.00',observacao:'Dados de Teste',latitude:-20.4222,longitude:-49.9722,foto:null}]; updateSelects(); renderizar(); } setInterval(loadData, 60000); }, 2000);
+        
     </script>
 </body>
 </html>
