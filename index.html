@@ -148,11 +148,26 @@
                     observacao: document.getElementById('observacao').value,
                     foto: currentPhoto
                 };
-                try {
-                    await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dados) });
-                    showStatus('success', '✅ Salvo!');
+                        try {
+                console.log('Enviando dados:', dados);
+                const response = await fetch(SCRIPT_URL, { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados) 
+                });
+                
+                console.log('Resposta do servidor:', response);
+                
+                if (response.ok) {
+                    showStatus('success', '✅ Salvo com sucesso!');
                     limparCamposForm();
-                } catch (err) { showStatus('error', '❌ Erro: ' + err.message); }
+                } else {
+                    showStatus('error', '❌ Erro ao salvar. Status: ' + response.status);
+                }
+            } catch (err) { 
+                console.error('Erro detalhado:', err); 
+                showStatus('error', '❌ Erro: ' + err.message + '. Verifique a URL do Apps Script!'); 
+            }
             });
         }
         function toggleAutoCaptura() {
