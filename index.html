@@ -206,12 +206,15 @@ function atualizarPosicao() {
                 if (response.ok) {
                     showStatus('success', '✅ Salvo com sucesso!');
                     limparCamposForm();
+                                    setTimeout(() => showStatus('info', ''), 3000);
                 } else {
                     showStatus('error', '❌ Erro ao salvar. Status: ' + response.status);
+                                    setTimeout(() => showStatus('info', ''), 3000);
                 }
             } catch (err) { 
                 console.error('Erro detalhado:', err); 
                 showStatus('error', '❌ Erro: ' + err.message + '. Verifique a URL do Apps Script!'); 
+                                        setTimeout(() => showStatus('info', ''), 3000);
             }
             });
         }
