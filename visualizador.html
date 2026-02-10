@@ -104,12 +104,10 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyS7ky481_jHlTVAfzbMeWXxv7e-M2RL_45qZ2iMfyFvJz8QYfx0OefHPIH4EGuJ7dd/exec';        let allData = [];
          let markers = [];
  let map = null;
  let polyline = null;
-
-        function initMap() {
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcAUmW6eCa2sFbp2tN_dSiDA170AQke0fV_1gynwlNRUs8FsHumPce2jVuEirWMvo/exec';        function initMap() {
             map = L.map('map').setView([-20.4222, -49.9722], 13);
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
                 attribution: '© OpenStreetMap'
